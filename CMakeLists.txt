@@ -29,7 +29,9 @@ find_package(OpenGL REQUIRED)
 # --------------------------------------------------
 # Executable
 # --------------------------------------------------
-add_executable(flappy main.cpp)
+file(GLOB_RECURSE SRC_FILES CONFIGURE_DEPENDS src/*.cpp)
+
+add_executable(flappy ${SRC_FILES} main.cpp)
 
 target_include_directories(flappy PRIVATE
     ${GLFW_INCLUDE_DIRS}
