@@ -1,26 +1,34 @@
 #ifndef SHADER_HPP
 #define SHADER_HPP
 
-#include <glad/glad.h>
-
 #include <string>
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
+// General purpose shader object. Compiles from file, generates
+// compile/link-time error messages and hosts several utility 
+// functions for easy management.
 class Shader
 {
 public:
-    // the program ID
-    unsigned int ID_;
+    unsigned int ID_; 
 
-    // constructor reads + builds the shader
-    Shader(const char* vertexPath, const char* fragmentPath);
-    // use/activate the shader
-    void use();
-    // utility uniform functions
-    void setBool(const std::string &name, bool value) const;
-    void setFloat(const std::string &name, float value) const;
-    void setInt(const std::string &name, int value) const;
-
+    Shader() {}
+    Shader  &use();
+    // compiles the shader from given source code
+    void    compile(const char *vertexSource, const char *fragmentSource, const char *geometrySource = nullptr);
+    // utility functions
+    void    setFloat    (const char *name, float value, bool useShader = false);
+    void    setInteger  (const char *name, int value, bool useShader = false);
+    void    setVector2f (const char *name, float x, float y, bool useShader = false);
+    void    setVector2f (const char *name, const glm::vec2 &value, bool useShader = false);
+    void    setVector3f (const char *name, float x, float y, float z, bool useShader = false);
+    void    setVector3f (const char *name, const glm::vec3 &value, bool useShader = false);
+    void    setVector4f (const char *name, float x, float y, float z, float w, bool useShader = false);
+    void    setVector4f (const char *name, const glm::vec4 &value, bool useShader = false);
+    void    setMatrix4  (const char *name, const glm::mat4 &matrix, bool useShader = false);
 private:
-    void checkCompileErrors(unsigned int shader, std::string type);
+    // checks if compilation or linking failed and if so, print the error logs
+    void    checkCompileErrors(unsigned int object, std::string type); 
 };
 #endif
